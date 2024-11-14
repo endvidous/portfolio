@@ -54,7 +54,7 @@ const Hero = () => {
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.2, transition: { duration: 0.8 } }}
-            href="https://www.linkedin.com/henry-punnoose"
+            href="https://www.linkedin.com/in/henry-punnoose/"
           >
             <PiLinkedinLogoBold />
           </motion.a>
