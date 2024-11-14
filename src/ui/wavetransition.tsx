@@ -71,7 +71,7 @@ const WaveTransition = ({ position = "bottom", className = "" }) => {
           </linearGradient>
         </defs>
         <motion.path
-          style={{ transform: "translate(0, 100px)", opacity: 0.8 }}
+          style={{ transform: "translate(0, 25px)", opacity: 0.8 }}
           fill="url(#sw-gradient-2)"
           animate={{
             d: [
