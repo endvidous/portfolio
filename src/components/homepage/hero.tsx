@@ -24,7 +24,7 @@ const Hero = () => {
   return (
     <div className="flex flex-col w-full min-h-[90dvh] lg:min-h-screen align-middle justify-center">
       <div className="flex flex-col flex-grow lg:w-[70%] mx-auto lg:mt-32 text-skin justify-center align-middle">
-        <span className="font-semibold text-4xl md:text-6xl mb-5 text-center">
+        <span className="font-semibold text-4xl h-[2.5rem] md:text-6xl md:h-[3rem] mb-5 text-center">
           <span className="">{`>`} </span>
           <motion.span className="">{displayText}</motion.span>
           <Cursor />
