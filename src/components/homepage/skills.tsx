@@ -11,9 +11,21 @@ const skillsSet = {
     "Java",
     "C",
     "C++",
-
   ],
   tools: ["VS Code", "Webpack", "ESLint"],
+};
+
+const skillSet = (category: string, skills: string[]) => {
+  return (
+    <div className="flex flex-row gap-2">
+      <h3>{category}</h3>
+      <div className="flex gap-1">
+        {skills.map((skill, index) => (
+          <h4 key={index}>{skill}</h4>
+        ))}
+      </div>
+    </div>
+  );
 };
 const Skills = () => {
   return (
@@ -21,7 +33,11 @@ const Skills = () => {
       <h3 className="text-4xl text-center mb-12 font-semibold ">
         <span className="border-b-4 border-skin">Skills</span>
       </h3>
-      <div></div>
+      <div>
+        {Object.entries(skillsSet).map(([category, skills]) =>
+          skillSet(category, skills)
+        )}
+      </div>
     </div>
   );
 };
