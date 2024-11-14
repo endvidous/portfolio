@@ -1,0 +1,67 @@
+{
+  "projects": [
+    {
+      "title": "Employee Management Dashboard",
+      "description": "A full-stack employee management dashboard using Next.js, MongoDB and more.",
+      "technologies": [
+        "TypeScript",
+        "Next.js",
+        "MongoDB",
+        "Cloundinary",
+        "Next Auth",
+        "Argon3"
+      ],
+      "imageUrl": [
+        "/images/employee-dashboard-1.png",
+        "/images/employee-dashboard-2.png",
+        "/images/employee-dashboard-3.png",
+        "/images/employee-dashboard-4.png",
+        "/images/employee-dashboard-5.png"
+      ],
+      "githubUrl": "https://github.com/endvidous/dashboard",
+      "projectUrl": "https://dashboard-seven-indol-19.vercel.app/"
+    },
+    {
+      "title": "Car Gallery App",
+      "description": "A car gallery app made using react, it implements custom pagination and search functionalities.",
+      "technologies": ["React", "Preact-Signals", "CSS3"],
+      "imageUrl": [
+        "/images/car-gallery-1.png",
+        "/images/car-gallery-2.png",
+        "/images/car-gallery-3.png",
+        "/images/car-gallery-4.png"
+      ],
+      "githubUrl": "https://github.com/endvidous/Car-Gallery-App",
+      "projectUrl": "https://car-gallery-app.vercel.app/"
+    },
+    {
+      "title": "ChatBot",
+      "description": "A basic chatbot made using react and serves JSON responses",
+      "technologies": ["React", "JSON"],
+      "imageUrl": [
+        "/images/chatbot1.png",
+        "/images/chatbot2.png",
+        "/images/chatbot3.png"
+      ],
+      "githubUrl": "https://chatbot-henry.vercel.app/",
+      "projectUrl": "https://github.com/endvidous/chatbot"
+    },
+    {
+      "title": "Monsoon Mist Homestay",
+      "description": "A team project where we made landing page for a homestay based in Karnataka.",
+      "technologies": [
+        "React",
+        "TailwindCSS",
+        "Animate On Scroll [AOS]",
+        "Embla-Carousel"
+      ],
+      "imageUrl": [
+        "/images/monsoon-mist-1.png",
+        "/images/monsoon-mist-2.png",
+        "/images/monsoon-mist-3.png"
+      ],
+      "githubUrl": null,
+      "projectUrl": "https://monsoon-mist.in"
+    }
+  ]
+}
