@@ -49,18 +49,21 @@ const Hero = () => {
           <motion.a
             whileHover={{ scale: 1.2, transition: { duration: 0.8 } }}
             href="https://www.github.com/endvidous"
+            target="_blank"
           >
             <PiGithubLogoBold />
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.2, transition: { duration: 0.8 } }}
             href="https://www.linkedin.com/in/henry-punnoose/"
+            target="_blank"
           >
             <PiLinkedinLogoBold />
           </motion.a>
           <motion.a
             whileHover={{ scale: 1.2, transition: { duration: 0.8 } }}
             href="mailto:henrypunnoose@gmail.com"
+            target="_blank"
           >
             <MdOutlineEmail className="font-bold" />
           </motion.a>

@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-darkOlive;
-  @apply text-skin;
+  @apply bg-heavyMetal;
+  @apply text-pearlBush;
 }

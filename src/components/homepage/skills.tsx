@@ -1,3 +1,5 @@
+import WaveTransition from "../../ui/wavetransition";
+
 const skillsSet = {
   frontend: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js"],
   backend: ["Node.js", "Express.js"],
@@ -29,16 +31,19 @@ const skillSet = (category: string, skills: string[]) => {
 };
 const Skills = () => {
   return (
-    <div className="">
-      <h3 className="text-4xl text-center mb-12 font-semibold ">
-        <span className="border-b-4 border-skin">Skills</span>
-      </h3>
+    <section className="">
+      <WaveTransition position="top" className="-mt-1" />
       <div>
-        {Object.entries(skillsSet).map(([category, skills]) =>
-          skillSet(category, skills)
-        )}
+        <h3 className="text-4xl text-center mb-12 font-semibold ">
+          <span className="border-b-4 border-skin">Skills</span>
+        </h3>
+        <div>
+          {Object.entries(skillsSet).map(([category, skills]) =>
+            skillSet(category, skills)
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
