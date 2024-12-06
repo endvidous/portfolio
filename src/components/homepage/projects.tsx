@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { PiGithubLogoBold, PiLinkBold } from "react-icons/pi";
-import WaveTransition from "../../ui/wavetransition";
 import { generateProjectImagePaths } from "../../utils/image";
 
 interface Project {
