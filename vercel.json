@@ -1,6 +1,4 @@
 {
-  "build": {
-    "installCommand": "yarn install",
-    "buildCommand": "yarn build"
-  }
+  "installCommand": "yarn install",
+  "buildCommand": "yarn build"
 }
