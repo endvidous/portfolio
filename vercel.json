@@ -1,4 +1,4 @@
 {
-  "installCommand": "yarn install --immutable",
+  "installCommand": "npx --yes yarn@4.8.1 install --immutable",
   "buildCommand": "yarn build"
 }
