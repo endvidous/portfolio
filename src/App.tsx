@@ -1,4 +1,4 @@
-import Contact from "./components/homepage/contact";
+// import Contact from "./components/homepage/contact";
 import Hero from "./components/homepage/hero";
 import Projects from "./components/homepage/projects";
 import Skills from "./components/homepage/skills";
@@ -9,7 +9,7 @@ function App() {
       <Hero />
       <Skills />
       <Projects projects={projects} />
-      <Contact />
+      {/* <Contact /> */}
     </div>
   );
 }

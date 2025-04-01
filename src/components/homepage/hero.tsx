@@ -20,7 +20,7 @@ const Hero = () => {
       ease: "easeInOut",
     });
     return controls.stop;
-  }, []);
+  });
   return (
     <div className="flex flex-col w-full min-h-[90dvh] lg:min-h-screen align-middle justify-center">
       <div className="flex flex-col flex-grow lg:w-[70%] mx-auto lg:mt-32 text-skin justify-center align-middle">
@@ -35,9 +35,9 @@ const Hero = () => {
           transition={{ duration: 1.8, delay: 1 }}
           className="text-sm md:text-xl  text-pretty text-center mt-4"
         >
-          A software developer based in India, loves solving problems and
-          enhancing UI/UX. I specialize in front-end engineering and enjoy doing
-          leetcode, hackerRank problems ⚙️, gaming 🎮, playing D&D 🐉, and
+          A software developer based in Bangalore, India, loves solving problems
+          and enhancing UI/UX. I specialize in front-end engineering and enjoy
+          doing leetcode, hackerRank problems ⚙️, gaming 🎮, playing D&D 🐉, and
           watching movies 🎬 in my free time.
         </motion.p>
         <motion.div

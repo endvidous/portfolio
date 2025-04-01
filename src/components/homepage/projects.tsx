@@ -1,8 +1,12 @@
+import { useState } from "react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { motion } from "framer-motion";
-import { PiGithubLogoBold, PiLinkBold } from "react-icons/pi";
+import { PiGithubLogoBold, PiLinkBold, PiX } from "react-icons/pi";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { generateProjectImagePaths } from "../../utils/image";
 
-interface Project {
+export type Project = {
   title: string;
   description: string;
   technologies: string[];
@@ -10,11 +14,15 @@ interface Project {
   imageCount: number;
   githubUrl: string | null;
   projectUrl: string;
-}
+};
 
-interface ProjectProps {
+export type ProjectProps = {
   projects: Project[];
-}
+};
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const ProjectLink = ({
   href,
@@ -27,93 +35,176 @@ const ProjectLink = ({
 }) => (
   <motion.a
     href={href}
-    className={`cursor-pointer text-2xl border-[1px] px-20 md:px-28 lg:px-8 py-4 rounded-md bg-neutral-700 ${
-      Icon === PiGithubLogoBold
-        ? `hover:text-red-400`
-        : `hover:text-lightSeaGreen`
-    } transition-colors hover:bg-neutral-500 duration-200`}
-    whileHover={{ scale: 1.1 }}
+    className="flex items-center gap-2 px-4 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700 transition-colors"
+    whileHover={{ scale: 1.05 }}
     aria-label={ariaLabel}
     target="_blank"
     rel="noopener noreferrer"
   >
-    <Icon />
+    <Icon className="text-xl" />
+    <span className="text-sm">
+      {ariaLabel.includes("GitHub") ? "Source Code" : "Live Demo"}
+    </span>
   </motion.a>
 );
 
-const TechnologyButton = (name: string) => (
-  <div className="border-2 border-brick rounded-md bg-chalkblack hover:bg-bulletShell hover:text-lightGrey transition-all ease-in-out duration-300">
-    <p className="p-1 text-sm font-semibold">{name}</p>
-  </div>
-);
+const ProjectCard = ({ project }: { project: Project; index?: number }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const Images = generateProjectImagePaths(
+    project.imageUrl,
+    project.imageCount
+  );
 
-const ProjectCard = ({
-  project,
-  index,
-}: {
-  project: Project;
-  index: number;
-}) => {
-  const {
-    title,
-    description,
-    technologies,
-    imageUrl,
-    imageCount,
-    githubUrl,
-    projectUrl,
-  } = project;
-
-  const Images = generateProjectImagePaths(imageUrl, imageCount);
   return (
-    <div className="flex flex-col lg:flex-row gap-2 md:w-[75%] lg:w-full border-2 border-bulletShell rounded-lg bg-lightGrey overflow-hidden">
-      <div className="w-full  lg:w-[320px] lg:h-[200px] aspect-video border-bulletShell border-b-2 lg:border-r-2 rounded-md overflow-clip">
-        <motion.img
-          className="w-full h-full object-cover"
-          whileHover={{ scale: 1.1, rotate: index % 2 == 0 ? 3 : -3 }}
-          transition={{ duration: 0.3, type: "spring" }}
-          src={Images[0]}
-          alt={`${title} preview`}
-        />
-      </div>
-
-      <div className="flex flex-col mt-3 p-2 lg:-4">
-        <h4 className="text-xl font-semibold mb-2">{title}</h4>
-        <p className="text-base line-clamp-3">{description}</p>
-        <div className="mt-4 flex flex-row flex-wrap gap-y-2 gap-x-4 lg:gap-2 ">
-          {technologies.map((tech, _) => TechnologyButton(tech))}
-        </div>
-      </div>
-      <div className="flex lg:flex-col justify-evenly lg:ml-auto py-2 lg:px-6 border-t-2 lg:border-l-2 border-bulletShell rounded">
-        {githubUrl && (
-          <ProjectLink
-            href={githubUrl}
-            icon={PiGithubLogoBold}
-            ariaLabel={`View ${title} source code on GitHub`}
+    <>
+      {/* Card */}
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        className="group cursor-pointer rounded-lg bg-neutral-800 overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full"
+        onClick={() => setIsOpen(true)}
+      >
+        <div className="relative aspect-video overflow-hidden">
+          <img
+            src={Images[0]}
+            alt={`${project.title} preview`}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
           />
-        )}
-        <ProjectLink
-          href={projectUrl}
-          icon={PiLinkBold}
-          ariaLabel={`Visit ${title} live project`}
-        />
-      </div>
-    </div>
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <span className="text-white font-semibold text-sm">
+              View Details
+            </span>
+          </div>
+        </div>
+
+        <div className="p-4">
+          <h3 className="text-lg font-semibold mb-2 line-clamp-1">
+            {project.title}
+          </h3>
+          <p className="text-neutral-400 text-sm line-clamp-2 mb-3">
+            {project.description}
+          </p>
+          <div className="flex flex-wrap gap-1">
+            {project.technologies.slice(0, 4).map((tech) => (
+              <span
+                key={tech}
+                className="px-2 py-1 text-xs rounded-full bg-neutral-700"
+              >
+                {tech}
+              </span>
+            ))}
+            {project.technologies.length > 4 && (
+              <span className="px-2 py-1 text-xs rounded-full bg-neutral-700">
+                +{project.technologies.length - 4}
+              </span>
+            )}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Modal */}
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="fixed inset-0 z-50 overflow-y-auto"
+      >
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm" />
+
+        <div className="flex min-h-full items-center justify-center p-4">
+          <DialogPanel className="relative w-full max-w-3xl rounded-xl bg-neutral-900 overflow-hidden">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors"
+              aria-label="Close"
+            >
+              <PiX className="text-xl" />
+            </button>
+
+            <div className="flex flex-col gap-6 p-6">
+              {/* Image Carousel Top */}
+              <div className="relative h-96">
+                <Swiper
+                  modules={[Navigation, Pagination, Autoplay]}
+                  navigation
+                  pagination={{ clickable: true, type: "progressbar" }}
+                  className="h-full rounded-lg overflow-hidden 
+                  [--swiper-navigation-color:#464646] 
+    [--swiper-pagination-color:#464646]
+    [--swiper-pagination-bullet-size:8px]
+    [--swiper-pagination-progressbar-bg-color:#e7e7e7]"
+                  autoHeight={true}
+                  loop={true}
+                >
+                  {Images.map((image, idx) => (
+                    <SwiperSlide key={idx}>
+                      <img
+                        src={image}
+                        alt={`${project.title} screenshot ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+
+              {/* Content Bottom */}
+              <div className="flex flex-col gap-4">
+                <DialogTitle className="text-3xl font-bold">
+                  {project.title}
+                </DialogTitle>
+
+                <p className="text-neutral-300 text-lg">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1.5 text-sm rounded-full bg-neutral-800 border border-neutral-600"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex gap-4 flex-wrap">
+                  {project?.githubUrl && (
+                    <ProjectLink
+                      href={project.githubUrl}
+                      icon={PiGithubLogoBold}
+                      ariaLabel={`View ${project.title} source code on GitHub`}
+                    />
+                  )}
+                  {project?.projectUrl && (
+                    <ProjectLink
+                      href={project.projectUrl}
+                      icon={PiLinkBold}
+                      ariaLabel={`Visit ${project.title} live project`}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
+    </>
   );
 };
 
-const Projects = ({ projects }: ProjectProps) => {
+const Projects = ({ projects }: { projects: Project[] }) => {
   return (
-    <section className="w-full">
-      <div className="flex flex-col flex-wrap justify-center py-16 px-4 xl:px-8  xl:max-w-[75%] lg:mx-auto ">
-        <h1 className="text-4xl text-center mb-12 font-semibold">
-          <span className="border-b-4 border-skin pb-2">Projects</span>
-        </h1>
-        <div className="flex flex-col gap-4 flex-wrap items-center">
-          {projects.map((project, index) => (
-            <ProjectCard project={project} index={index} key={project.title} />
-          ))}
-        </div>
+    <section className="py-16 px-4 xl:px-8 max-w-7xl mx-auto">
+      <h1 className="text-4xl font-bold text-center mb-12">
+        <span className="bg-gradient-to-r to-sky-400 from-emerald-400 bg-clip-text text-transparent">
+          Projects
+        </span>
+      </h1>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {projects.map((project) => (
+          <ProjectCard key={project.title} project={project} />
+        ))}
       </div>
     </section>
   );
