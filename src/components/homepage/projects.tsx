@@ -13,7 +13,7 @@ export type Project = {
   imageUrl: string;
   imageCount: number;
   githubUrl: string | null;
-  projectUrl: string;
+  projectUrl: string | null;
 };
 
 export type ProjectProps = {
