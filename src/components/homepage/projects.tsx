@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PiGithubLogoBold, PiLinkBold, PiX } from "react-icons/pi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { generateProjectImagePaths } from "../../utils/image";
 
 export type Project = {
@@ -46,6 +47,61 @@ const ProjectLink = ({
       {ariaLabel.includes("GitHub") ? "Source Code" : "Live Demo"}
     </span>
   </motion.a>
+);
+
+const ZoomableImage = ({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) => (
+  <TransformWrapper
+    initialScale={1}
+    minScale={1}
+    maxScale={3}
+    wheel={{ step: 0.1 }}
+    pinch={{ step: 5 }}
+    doubleClick={{ step: 2, mode: "toggle" }}
+    centerOnInit={true}
+    limitToBounds={true}
+    smooth={true}
+    alignmentAnimation={{
+      sizeX: 0,
+      sizeY: 0,
+      velocityAlignmentTime: 200,
+    }}
+  >
+    {() => (
+      <>
+        <TransformComponent
+          wrapperStyle={{
+            width: "100%",
+            height: "100%",
+            cursor: "grab",
+          }}
+          contentStyle={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className={`object-contain max-h-[50vh] w-auto select-none ${
+              className || ""
+            }`}
+            draggable={false}
+          />
+        </TransformComponent>
+      </>
+    )}
+  </TransformWrapper>
 );
 
 const ProjectCard = ({ project }: { project: Project; index?: number }) => {
@@ -113,16 +169,16 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
         <DialogPanel className="relative w-full max-w-3xl max-h-[95vh] flex flex-col rounded-xl bg-neutral-900 overflow-hidden">
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors"
+            className="absolute top-4 right-4 z-30 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors"
             aria-label="Close"
           >
             <PiX className="text-xl" />
           </button>
 
           <div className="flex flex-col overflow-hidden p-6 gap-6">
-            {/* Image Carousel */}
+            {/* Image Carousel with Zoom */}
             <div
-              className="w-full flex justify-center items-center overflow-hidden rounded-lg bg-neutral-900"
+              className="w-full flex justify-center items-center overflow-hidden rounded-lg bg-neutral-900 relative"
               style={{ maxHeight: "50vh" }}
             >
               <Swiper
@@ -135,26 +191,26 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                 loop={true}
                 autoHeight={true}
                 className="w-full h-full transition-all duration-300 ease-in-out relative"
+                allowTouchMove={false} // Disable swiper touch to allow zoom gestures
               >
                 {Images.map((image, idx) => (
                   <SwiperSlide
                     key={idx}
-                    className="flex items-center justify-center bg-neutral-900 p-2"
+                    className="flex items-center justify-center bg-neutral-900 p-2 relative"
                   >
-                    <img
+                    <ZoomableImage
                       src={image}
                       alt={`${project.title} screenshot ${idx + 1}`}
-                      className="object-contain max-h-[50vh] w-auto"
                     />
                   </SwiperSlide>
                 ))}
 
-                {/* Custom navigation buttons */}
+                {/* Custom navigation buttons with higher z-index */}
                 <div
-                  className={`swiper-button-prev swiper-button-prev-${safeTitle} absolute top-0 left-0 h-full w-1/4 opacity-30 hover:opacity-60 z-10 flex items-center justify-start`}
+                  className={`swiper-button-prev swiper-button-prev-${safeTitle} absolute top-0 left-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 flex items-center justify-start`}
                 />
                 <div
-                  className={`swiper-button-next swiper-button-next-${safeTitle} absolute top-0 right-0 h-full w-1/4 opacity-30 hover:opacity-60 z-10 flex items-center justify-end`}
+                  className={`swiper-button-next swiper-button-next-${safeTitle} absolute top-0 right-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 flex items-center justify-end`}
                 />
               </Swiper>
             </div>
