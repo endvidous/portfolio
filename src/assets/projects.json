@@ -17,6 +17,20 @@
       "projectUrl": null
     },
     {
+      "title": "Monsoon Mist Homestay",
+      "description": "A team project where we made landing page for a homestay based in Karnataka.",
+      "technologies": [
+        "React",
+        "TailwindCSS",
+        "Animate On Scroll [AOS]",
+        "Embla-Carousel"
+      ],
+      "imageUrl": "monsoon-mist",
+      "imageCount": 3,
+      "githubUrl": null,
+      "projectUrl": "https://monsoon-mist.in"
+    },
+    {
       "title": "Employee Management Dashboard",
       "description": "A full-stack employee management dashboard using Next.js, MongoDB and more.",
       "technologies": [
@@ -49,20 +63,6 @@
       "imageCount": 4,
       "githubUrl": "https://chatbot-henry.vercel.app/",
       "projectUrl": "https://github.com/endvidous/chatbot"
-    },
-    {
-      "title": "Monsoon Mist Homestay",
-      "description": "A team project where we made landing page for a homestay based in Karnataka.",
-      "technologies": [
-        "React",
-        "TailwindCSS",
-        "Animate On Scroll [AOS]",
-        "Embla-Carousel"
-      ],
-      "imageUrl": "monsoon-mist",
-      "imageCount": 3,
-      "githubUrl": null,
-      "projectUrl": "https://monsoon-mist.in"
     }
   ]
 }
