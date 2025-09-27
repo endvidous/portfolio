@@ -54,6 +54,7 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
     project.imageUrl,
     project.imageCount
   );
+  const safeTitle = project.title.replace(/\s+/g, "-").toLowerCase();
 
   return (
     <>
@@ -105,88 +106,98 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        className="fixed inset-0 z-50 overflow-y-auto"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm" />
 
-        <div className="flex min-h-full items-center justify-center p-4">
-          <DialogPanel className="relative w-full max-w-3xl rounded-xl bg-neutral-900 overflow-hidden">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors"
-              aria-label="Close"
-            >
-              <PiX className="text-xl" />
-            </button>
+        <DialogPanel className="relative w-full max-w-3xl max-h-[95vh] flex flex-col rounded-xl bg-neutral-900 overflow-hidden">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 transition-colors"
+            aria-label="Close"
+          >
+            <PiX className="text-xl" />
+          </button>
 
-            <div className="flex flex-col gap-6 p-6">
-              {/* Image Carousel Top */}
-              <div className="relative h-96">
-                <Swiper
-                  modules={[Navigation, Pagination, Autoplay]}
-                  navigation
-                  pagination={{ clickable: true, type: "progressbar" }}
-                  className="h-full rounded-lg overflow-hidden 
-                  [--swiper-navigation-color:#464646] 
-    [--swiper-pagination-color:#464646]
-    [--swiper-pagination-bullet-size:8px]
-    [--swiper-pagination-progressbar-bg-color:#e7e7e7]"
-                  autoHeight={true}
-                  loop={true}
-                >
-                  {Images.map((image, idx) => (
-                    <SwiperSlide key={idx}>
-                      <img
-                        src={image}
-                        alt={`${project.title} screenshot ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+          <div className="flex flex-col overflow-hidden p-6 gap-6">
+            {/* Image Carousel */}
+            <div
+              className="w-full flex justify-center items-center overflow-hidden rounded-lg bg-neutral-900"
+              style={{ maxHeight: "50vh" }}
+            >
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                navigation={{
+                  nextEl: `.swiper-button-next-${safeTitle}`,
+                  prevEl: `.swiper-button-prev-${safeTitle}`,
+                }}
+                pagination={{ clickable: true, type: "bullets" }}
+                loop={true}
+                autoHeight={true}
+                className="w-full h-full transition-all duration-300 ease-in-out relative"
+              >
+                {Images.map((image, idx) => (
+                  <SwiperSlide
+                    key={idx}
+                    className="flex items-center justify-center bg-neutral-900 p-2"
+                  >
+                    <img
+                      src={image}
+                      alt={`${project.title} screenshot ${idx + 1}`}
+                      className="object-contain max-h-[50vh] w-auto"
+                    />
+                  </SwiperSlide>
+                ))}
+
+                {/* Custom navigation buttons */}
+                <div
+                  className={`swiper-button-prev swiper-button-prev-${safeTitle} absolute top-0 left-0 h-full w-1/4 opacity-30 hover:opacity-60 z-10 flex items-center justify-start`}
+                />
+                <div
+                  className={`swiper-button-next swiper-button-next-${safeTitle} absolute top-0 right-0 h-full w-1/4 opacity-30 hover:opacity-60 z-10 flex items-center justify-end`}
+                />
+              </Swiper>
+            </div>
+
+            {/* Content */}
+            <div>
+              <DialogTitle className="text-3xl font-bold">
+                {project.title}
+              </DialogTitle>
+              <p className="text-neutral-300 text-lg mt-2">
+                {project.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mt-2">
+                {project.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1.5 text-sm rounded-full bg-neutral-800 border border-neutral-600"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
 
-              {/* Content Bottom */}
-              <div className="flex flex-col gap-4">
-                <DialogTitle className="text-3xl font-bold">
-                  {project.title}
-                </DialogTitle>
-
-                <p className="text-neutral-300 text-lg">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1.5 text-sm rounded-full bg-neutral-800 border border-neutral-600"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-4 flex gap-4 flex-wrap">
-                  {project?.githubUrl && (
-                    <ProjectLink
-                      href={project.githubUrl}
-                      icon={PiGithubLogoBold}
-                      ariaLabel={`View ${project.title} source code on GitHub`}
-                    />
-                  )}
-                  {project?.projectUrl && (
-                    <ProjectLink
-                      href={project.projectUrl}
-                      icon={PiLinkBold}
-                      ariaLabel={`Visit ${project.title} live project`}
-                    />
-                  )}
-                </div>
+              <div className="mt-4 flex gap-4 flex-wrap">
+                {project?.githubUrl && (
+                  <ProjectLink
+                    href={project.githubUrl}
+                    icon={PiGithubLogoBold}
+                    ariaLabel={`View ${project.title} source code on GitHub`}
+                  />
+                )}
+                {project?.projectUrl && (
+                  <ProjectLink
+                    href={project.projectUrl}
+                    icon={PiLinkBold}
+                    ariaLabel={`Visit ${project.title} live project`}
+                  />
+                )}
               </div>
             </div>
-          </DialogPanel>
-        </div>
+          </div>
+        </DialogPanel>
       </Dialog>
     </>
   );
