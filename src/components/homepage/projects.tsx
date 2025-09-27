@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { motion } from "framer-motion";
 import { PiGithubLogoBold, PiLinkBold, PiX } from "react-icons/pi";
@@ -49,7 +49,23 @@ const ProjectLink = ({
   </motion.a>
 );
 
-const ZoomableImage = ({
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
+    };
+
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
+
+  return isMobile;
+};
+
+const ResponsiveImage = ({
   src,
   alt,
   className,
@@ -57,32 +73,41 @@ const ZoomableImage = ({
   src: string;
   alt: string;
   className?: string;
-}) => (
-  <TransformWrapper
-    initialScale={1}
-    minScale={1}
-    maxScale={3}
-    wheel={{ step: 0.1 }}
-    pinch={{ step: 5 }}
-    doubleClick={{ step: 2, mode: "toggle" }}
-    centerOnInit={true}
-    limitToBounds={true}
-    smooth={true}
-    alignmentAnimation={{
-      sizeX: 0,
-      sizeY: 0,
-      velocityAlignmentTime: 200,
-    }}
-    panning={{ disabled: false, velocityDisabled: true }}
-    onPanning={(ref) => {
-      if (ref.state.scale <= 1.1) {
-        return false;
-      }
-      return true;
-    }}
-  >
-    {() => (
-      <>
+}) => {
+  const isMobile = useIsMobile();
+
+  // On mobile, just show the image without zoom functionality
+  if (isMobile) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={`object-contain max-h-[50vh] w-auto select-none ${
+          className || ""
+        }`}
+        draggable={false}
+        style={{
+          touchAction: "auto",
+          maxWidth: "100%",
+          height: "auto",
+        }}
+      />
+    );
+  }
+
+  // On desktop, use the zoom functionality
+  return (
+    <TransformWrapper
+      initialScale={1}
+      minScale={1}
+      maxScale={3}
+      wheel={{ step: 0.1 }}
+      doubleClick={{ step: 2, mode: "toggle" }}
+      centerOnInit={true}
+      limitToBounds={true}
+      smooth={true}
+    >
+      {() => (
         <TransformComponent
           wrapperStyle={{
             width: "100%",
@@ -106,10 +131,10 @@ const ZoomableImage = ({
             draggable={false}
           />
         </TransformComponent>
-      </>
-    )}
-  </TransformWrapper>
-);
+      )}
+    </TransformWrapper>
+  );
+};
 
 const ProjectCard = ({ project }: { project: Project; index?: number }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -230,7 +255,7 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                     key={idx}
                     className="flex items-center justify-center bg-neutral-900 p-2 relative"
                   >
-                    <ZoomableImage
+                    <ResponsiveImage
                       src={image}
                       alt={`${project.title} screenshot ${idx + 1}`}
                     />
