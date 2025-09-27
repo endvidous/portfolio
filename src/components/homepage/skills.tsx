@@ -133,7 +133,7 @@ const Skills: React.FC = () => {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className="relative px-3 py-1 text-xl font-medium text-chalkWhite"
+              className="relative px-3 py-1 text-[1.05rem] md:text-xl lg:text-2xl font-medium text-chalkWhite"
             >
               {activeCategory === category && (
                 <motion.div
@@ -147,7 +147,7 @@ const Skills: React.FC = () => {
         </motion.div>
 
         {/* Compact skills grid */}
-        <div className="max-w-[75%] mx-auto min-h-[12rem]">
+        <div className="max-w-[85%] mx-auto min-h-[12rem]">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeCategory}
