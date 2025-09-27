@@ -176,7 +176,7 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
           </button>
 
           <div className="flex flex-col overflow-hidden p-6 gap-6">
-            {/* Image Carousel with Zoom */}
+            {/* Image Carousel */}
             <div
               className="w-full flex justify-center items-center overflow-hidden rounded-lg bg-neutral-900 relative"
               style={{ maxHeight: "50vh" }}
@@ -191,7 +191,7 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                 loop={true}
                 autoHeight={true}
                 className="w-full h-full transition-all duration-300 ease-in-out relative"
-                allowTouchMove={false} // Disable swiper touch to allow zoom gestures
+                allowTouchMove={false}
               >
                 {Images.map((image, idx) => (
                   <SwiperSlide
@@ -205,7 +205,7 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                   </SwiperSlide>
                 ))}
 
-                {/* Custom navigation buttons with higher z-index */}
+                {/* Custom navigation */}
                 <div
                   className={`swiper-button-prev swiper-button-prev-${safeTitle} absolute top-0 left-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 flex items-center justify-start`}
                 />
