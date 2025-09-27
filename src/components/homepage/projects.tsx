@@ -73,10 +73,8 @@ const ZoomableImage = ({
       sizeY: 0,
       velocityAlignmentTime: 200,
     }}
-    // Disable panning when not zoomed to prevent conflicts with Swiper
     panning={{ disabled: false, velocityDisabled: true }}
     onPanning={(ref) => {
-      // Only allow panning when zoomed in
       if (ref.state.scale <= 1.1) {
         return false;
       }
@@ -205,16 +203,12 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                 loop={Images.length > 1}
                 autoHeight={true}
                 className="w-full h-full transition-all duration-300 ease-in-out relative"
-                // Enable touch/swipe on mobile
                 allowTouchMove={true}
-                // Better touch handling
                 touchRatio={1}
                 touchAngle={45}
                 simulateTouch={true}
-                // Prevent conflicts with zoom/pan
                 touchStartPreventDefault={false}
                 touchMoveStopPropagation={false}
-                // Responsive breakpoints
                 breakpoints={{
                   320: {
                     slidesPerView: 1,
@@ -225,7 +219,6 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                     spaceBetween: 20,
                   },
                 }}
-                // Sensitivity settings
                 threshold={5}
                 shortSwipes={true}
                 longSwipes={true}
