@@ -73,6 +73,15 @@ const ZoomableImage = ({
       sizeY: 0,
       velocityAlignmentTime: 200,
     }}
+    // Disable panning when not zoomed to prevent conflicts with Swiper
+    panning={{ disabled: false, velocityDisabled: true }}
+    onPanning={(ref) => {
+      // Only allow panning when zoomed in
+      if (ref.state.scale <= 1.1) {
+        return false;
+      }
+      return true;
+    }}
   >
     {() => (
       <>
@@ -187,11 +196,41 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                   nextEl: `.swiper-button-next-${safeTitle}`,
                   prevEl: `.swiper-button-prev-${safeTitle}`,
                 }}
-                pagination={{ clickable: true, type: "bullets" }}
-                loop={true}
+                pagination={{
+                  clickable: true,
+                  type: "bullets",
+                  bulletClass: "swiper-pagination-bullet",
+                  bulletActiveClass: "swiper-pagination-bullet-active",
+                }}
+                loop={Images.length > 1}
                 autoHeight={true}
                 className="w-full h-full transition-all duration-300 ease-in-out relative"
-                allowTouchMove={false}
+                // Enable touch/swipe on mobile
+                allowTouchMove={true}
+                // Better touch handling
+                touchRatio={1}
+                touchAngle={45}
+                simulateTouch={true}
+                // Prevent conflicts with zoom/pan
+                touchStartPreventDefault={false}
+                touchMoveStopPropagation={false}
+                // Responsive breakpoints
+                breakpoints={{
+                  320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                  },
+                  768: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                  },
+                }}
+                // Sensitivity settings
+                threshold={5}
+                shortSwipes={true}
+                longSwipes={true}
+                longSwipesRatio={0.5}
+                longSwipesMs={300}
               >
                 {Images.map((image, idx) => (
                   <SwiperSlide
@@ -205,13 +244,17 @@ const ProjectCard = ({ project }: { project: Project; index?: number }) => {
                   </SwiperSlide>
                 ))}
 
-                {/* Custom navigation */}
-                <div
-                  className={`swiper-button-prev swiper-button-prev-${safeTitle} absolute top-0 left-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 flex items-center justify-start`}
-                />
-                <div
-                  className={`swiper-button-next swiper-button-next-${safeTitle} absolute top-0 right-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 flex items-center justify-end`}
-                />
+                {/* Custom navigation - Hide on small screens */}
+                {Images.length > 1 && (
+                  <>
+                    <div
+                      className={`swiper-button-prev swiper-button-prev-${safeTitle} absolute top-0 left-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 items-center justify-start hidden md:flex`}
+                    />
+                    <div
+                      className={`swiper-button-next swiper-button-next-${safeTitle} absolute top-0 right-0 h-full w-1/4 opacity-30 hover:opacity-60 z-40 items-center justify-end hidden md:flex`}
+                    />
+                  </>
+                )}
               </Swiper>
             </div>
 

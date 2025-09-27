@@ -5,7 +5,7 @@ import Skills from "./components/homepage/skills";
 import { projects } from "./assets/projects.json";
 function App() {
   return (
-    <div>
+    <div className="w-[85%] md:w-full">
       <Hero />
       <Skills />
       <Projects projects={projects} />
