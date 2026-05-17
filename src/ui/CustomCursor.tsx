@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const CustomCursor = () => {
   const [visible, setVisible] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const visibleRef = useRef(false);
 
   const mx = useMotionValue(-200);
   const my = useMotionValue(-200);
@@ -17,7 +18,10 @@ const CustomCursor = () => {
     const onMove = (e: MouseEvent) => {
       mx.set(e.clientX);
       my.set(e.clientY);
-      if (!visible) setVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setVisible(true);
+      }
     };
 
     const onEnterInteractive = () => setHovering(true);
@@ -38,7 +42,7 @@ const CustomCursor = () => {
         el.removeEventListener("mouseleave", onLeaveInteractive);
       });
     };
-  }, [visible]);
+  }, [mx, my]);
 
   return (
     <>
@@ -67,29 +71,25 @@ const CustomCursor = () => {
       />
       {/* Dot — precise */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9996]"
+        animate={{
+          width: hovering ? 6 : 5,
+          height: hovering ? 6 : 5,
+          backgroundColor: hovering ? "#B17457" : "#ECDFCC",
+          opacity: visible ? 1 : 0,
+        }}
+        transition={{ duration: 0.15 }}
         style={{
           x: dotX,
           y: dotY,
           translateX: "-50%",
           translateY: "-50%",
-          width: hovering ? 6 : 5,
-          height: hovering ? 6 : 5,
           borderRadius: "50%",
-          backgroundColor: hovering ? "#B17457" : "#ECDFCC",
-          opacity: visible ? 1 : 0,
           position: "fixed",
           top: 0,
           left: 0,
           pointerEvents: "none",
           zIndex: 9996,
         }}
-        animate={{
-          width: hovering ? 6 : 5,
-          height: hovering ? 6 : 5,
-          backgroundColor: hovering ? "#B17457" : "#ECDFCC",
-        }}
-        transition={{ duration: 0.15 }}
       />
     </>
   );
