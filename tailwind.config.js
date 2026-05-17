@@ -4,6 +4,9 @@ export default {
 
   theme: {
     extend: {
+      fontFamily: {
+        'space-grotesk': ['Space Grotesk', 'sans-serif'],
+      },
       colors: {
         darkOlive: "#181C14",
         lightGrey: "#3C3D37",

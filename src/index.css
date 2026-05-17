@@ -2,7 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --swiper-theme-color: #ECDFCC;
+  --swiper-navigation-size: 24px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply bg-heavyMetal;
-  @apply text-pearlBush;
+  @apply bg-heavyMetal text-pearlBush;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Hide default cursor on precise-pointer devices (desktop) */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
 }

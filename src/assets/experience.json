@@ -1,0 +1,15 @@
+{
+  "experience": [
+    {
+      "company": "Alfowin Digital Private Limited",
+      "role": "Software Developer (Full-Stack)",
+      "period": "Jan 2026 – Present",
+      "location": "Bangalore, India",
+      "bullets": [
+        "Architected and developed the initial NestJS-based SaaS backend for the company's first product, designed to scale to 100k users, implementing Redis-based caching and rate limiting, and secure authentication with email OTP and role-based access control.",
+        "Designed and implemented background queues for cleaning up orphaned AWS S3 objects.",
+        "Developed and implemented complete payment workflows, ensuring robust validation, failure handling, and an efficient UI/UX."
+      ]
+    }
+  ]
+}

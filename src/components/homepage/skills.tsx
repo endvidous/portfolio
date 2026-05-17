@@ -1,58 +1,24 @@
 import React, { useEffect, useState } from "react";
 import {
-  React_Icon,
-  CSharp_Icon,
-  C_Icon,
-  Cpp_Icon,
-  GitHub_Icon,
-  Git_Icon,
-  JavaScript_Icon,
-  Java_Icon,
-  MongoDB_Icon,
-  MySQL_Icon,
-  Postgres_Icon,
-  Python_Icon,
-  TypeScript_Icon,
-  Vue_Icon,
-  Express_Icon,
-  NextJs_Icon,
-  Tailwind_Icon,
-  AWS_Icon,
-  GraphQl_Icon,
-  FramerMotion_Icon,
-  ReactQuery_Icon,
-  Axios_Icon,
-  NodeJs_Icon,
-  Vercel_Icon,
-  Postman_Icon,
+  React_Icon, CSharp_Icon, C_Icon, Cpp_Icon, GitHub_Icon, Git_Icon,
+  JavaScript_Icon, Java_Icon, MongoDB_Icon, MySQL_Icon, Postgres_Icon,
+  Python_Icon, TypeScript_Icon, Vue_Icon, Express_Icon, NextJs_Icon,
+  Tailwind_Icon, AWS_Icon, GraphQl_Icon, FramerMotion_Icon, ReactQuery_Icon,
+  Axios_Icon, NodeJs_Icon, Vercel_Icon, Postman_Icon,
 } from "../../assets/skill_icons";
-import WaveTransition from "../../ui/wavetransition";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionLabel from "../../ui/SectionLabel";
 
-// Define the Skill type
-interface Skill {
-  name: string;
-  icon: JSX.Element;
-}
-
-// Define the SkillsSet type with typed categories
-interface SkillsSet {
-  Frontend: Skill[];
-  Backend: Skill[];
-  Languages: Skill[];
-  Other: Skill[];
-}
-
-// Define a type for the category keys to make them safe to use as index
+interface Skill { name: string; icon: JSX.Element; }
+interface SkillsSet { Frontend: Skill[]; Backend: Skill[]; Languages: Skill[]; Other: Skill[]; }
 type SkillCategory = keyof SkillsSet;
 
-// Define the skills data with proper typing
 const skillsSet: SkillsSet = {
   Frontend: [
     { name: "React", icon: <React_Icon /> },
     { name: "Next.Js", icon: <NextJs_Icon /> },
     { name: "Tailwind CSS", icon: <Tailwind_Icon /> },
-    { name: "Expo - React Native", icon: <React_Icon /> },
+    { name: "Expo / React Native", icon: <React_Icon /> },
     { name: "Vue.Js", icon: <Vue_Icon /> },
     { name: "Framer Motion", icon: <FramerMotion_Icon /> },
     { name: "React Query", icon: <ReactQuery_Icon /> },
@@ -84,81 +50,64 @@ const skillsSet: SkillsSet = {
   ],
 };
 
+const categories = Object.keys(skillsSet) as SkillCategory[];
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.8, filter: "blur(4px)" },
+  visible: { opacity: 1, scale: 1, filter: "blur(0px)" },
+  exit: { opacity: 0, scale: 0.5, filter: "blur(4px)" },
+};
+
 const Skills: React.FC = () => {
-  const categories = Object.keys(skillsSet) as SkillCategory[];
-  const [activeCategory, setActiveCategory] =
-    useState<SkillCategory>("Frontend");
+  const [activeCategory, setActiveCategory] = useState<SkillCategory>("Frontend");
   const [autoRotate, setAutoRotate] = useState(true);
 
-  // Auto-rotate categories every 2 seconds
   useEffect(() => {
     if (!autoRotate) return;
     const interval = setInterval(() => {
       setActiveCategory((current) => {
-        const currentIndex = categories.indexOf(current);
-        return categories[(currentIndex + 1) % categories.length];
+        const i = categories.indexOf(current);
+        return categories[(i + 1) % categories.length];
       });
     }, 2000);
     return () => clearInterval(interval);
-  }, [autoRotate, categories]);
-
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.6 },
-    visible: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.2 },
-  };
-
-  const categoryVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+  }, [autoRotate]);
 
   return (
-    <section className="bg-gray-50 dark:bg-heavyMetal relative pb-12">
-      <WaveTransition position="top" />
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-8 dark:text-white">
-          <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-            Skills
-          </span>
-        </h2>
+    <section className="px-6 md:px-10 py-28 md:py-36 max-w-7xl mx-auto border-t border-white/10">
+      <SectionLabel eyebrow="Tech Stack" title="Skills" />
 
-        {/* Compact category selector */}
-        <motion.div
-          className="flex justify-center gap-2 mb-6 relative"
-          onHoverStart={() => setAutoRotate(false)}
-          onHoverEnd={() => setAutoRotate(true)}
-        >
+      <div onMouseEnter={() => setAutoRotate(false)} onMouseLeave={() => setAutoRotate(true)}>
+        <div className="flex gap-6 md:gap-8 mb-10 flex-wrap">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className="relative px-3 py-1 text-[1.05rem] md:text-xl lg:text-2xl font-medium text-chalkWhite"
+              className={`relative text-base md:text-lg font-semibold transition-colors pb-1 ${
+                activeCategory === category ? "text-skin" : "text-lightOlive hover:text-chalkgrey"
+              }`}
             >
+              {category}
               {activeCategory === category && (
                 <motion.div
-                  className="absolute inset-0 bg-skin/20 rounded-md"
-                  transition={{ type: "spring", stiffness: 300, damping: 40 }}
+                  layoutId="activeTab"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-brick"
+                  transition={{ type: "spring", stiffness: 400, damping: 40 }}
                 />
               )}
-              <span className="relative z-10">{category}</span>
             </button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Compact skills grid */}
-        <div className="max-w-[85%] mx-auto min-h-[12rem]">
+        <div className="min-h-[14rem]">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeCategory}
-              variants={categoryVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              transition={{ duration: 0.3 }}
-              onHoverStart={() => setAutoRotate(false)}
-              onHoverEnd={() => setAutoRotate(true)}
-              className="grid grid-cols-4 sm:grid-cols-5 gap-3"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 md:gap-4"
             >
               {skillsSet[activeCategory].map((skill, index) => (
                 <motion.div
@@ -167,31 +116,30 @@ const Skills: React.FC = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  transition={{ delay: index * 0.05 }}
-                  className="flex flex-col items-center p-2 rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-2 border-white/60  dark:border-gray-700/50 hover:shadow-pearlBush transition-all duration-300"
+                  transition={{ delay: index * 0.04, type: "spring", stiffness: 200, damping: 20 }}
+                  className="rounded-xl bg-white/[0.04] border border-white/[0.07] p-1.5"
                 >
-                  <div className="w-8 h-8 mb-1 opacity-80 hover:opacity-100 transition-opacity">
-                    {skill.icon}
+                  <div className="group flex flex-col items-center p-3 rounded-[calc(0.75rem-0.375rem)] bg-lightGrey/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:bg-lightGrey/35 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 cursor-default">
+                    <div className="w-8 h-8 mb-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                      {skill.icon}
+                    </div>
+                    <span className="text-[10px] md:text-xs font-medium text-chalkgrey group-hover:text-pearlBush transition-colors text-center leading-tight">
+                      {skill.name}
+                    </span>
                   </div>
-                  <span className="text-xs font-medium text-gray-600 dark:text-gray-300 text-center">
-                    {skill.name}
-                  </span>
                 </motion.div>
               ))}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Dots indicator */}
-        <div className="flex justify-center gap-1.5 mt-6">
+        <div className="flex gap-2 mt-6">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`w-4 h-2 rounded-full transition-colors ${
-                activeCategory === category
-                  ? "bg-skin"
-                  : "bg-gray-300 dark:bg-gray-600"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                activeCategory === category ? "bg-brick w-6" : "bg-lightOlive/40 w-4 hover:bg-lightOlive/70"
               }`}
             />
           ))}
