@@ -44,8 +44,6 @@ const CustomCursor = () => {
     <>
       {/* Outer ring — lags behind */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9995]"
-        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         animate={{
           width: hovering ? 48 : 32,
           height: hovering ? 48 : 32,
